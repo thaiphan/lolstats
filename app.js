@@ -25,34 +25,39 @@ var svg = d3.select("body").append("svg")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("data.csv", function(error, data) {
-  var xColumn = 'Minute';
-  var yColumn = 'Damage Dealt';
+svg.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis)
+  .append("text")
+  .attr("class", "label")
+  .attr("x", width)
+  .attr("y", -6)
+  .style("text-anchor", "end")
+  .text("Minutes (m)");
 
+svg.append("g")
+  .attr("class", "y axis")
+  .call(yAxis)
+  .append("text")
+  .attr("class", "label")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 6)
+  .attr("dy", ".71em")
+  .style("text-anchor", "end")
+  .text("Damage Dealt ('000s)");
+
+var data = [];
+d3.csv("data.csv", function(error, data) {
+  window.data = data;
+  drawGraph('Damage Dealt', 'Damage Dealt');
+});
+
+function drawGraph(xColumn, yColumn) {
   x.domain(d3.extent(data, function(d) { return +d[xColumn]; })).nice();
   y.domain(d3.extent(data, function(d) { return +d[yColumn]; })).nice();
 
-  svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis)
-    .append("text")
-    .attr("class", "label")
-    .attr("x", width)
-    .attr("y", -6)
-    .style("text-anchor", "end")
-    .text("Minutes (m)");
-
-  svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis)
-    .append("text")
-    .attr("class", "label")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
-    .text("Damage Dealt ('000s)");
+  svg.selectAll('.dot').remove();
 
   svg.selectAll(".dot")
     .data(data)
@@ -81,4 +86,16 @@ d3.csv("data.csv", function(error, data) {
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function(d) { return d; });
+
+  svg.selectAll('g .x.axis').call(xAxis);
+
+  svg.selectAll('g .y.axis').call(yAxis);
+}
+
+document.querySelector('select[name="x-axis"]').addEventListener('change', function() {
+  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+});
+
+document.querySelector('select[name="y-axis"]').addEventListener('change', function() {
+  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
 });
