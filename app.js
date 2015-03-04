@@ -47,26 +47,41 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Damage Dealt ('000s)");
 
+var role = 'ADC';
 var data = [];
 d3.csv("data.csv", function(error, data) {
   window.data = data;
   drawGraph('Damage Dealt', 'Damage Dealt');
 });
 
+function getData() {
+  return data.filter(function(item) {
+    return item.Role == role;
+  });
+}
+
 function drawGraph(xColumn, yColumn) {
-  x.domain(d3.extent(data, function(d) { return +d[xColumn]; })).nice();
-  y.domain(d3.extent(data, function(d) { return +d[yColumn]; })).nice();
+  x.domain(d3.extent(getData(), function(d) { return +d[xColumn]; })).nice();
+  y.domain(d3.extent(getData(), function(d) { return +d[yColumn]; })).nice();
+
+  color = d3.scale.category10();
 
   svg.selectAll('.dot').remove();
 
   svg.selectAll(".dot")
-    .data(data)
+    .data(getData())
     .enter().append("circle")
     .attr("class", "dot")
     .attr("r", 3.5)
     .attr("cx", function(d) { return x(d[xColumn]); })
     .attr("cy", function(d) { return y(d[yColumn]); })
     .style("fill", function(d) { return color(d.Player); });
+
+  svg.selectAll('g .x.axis').call(xAxis);
+
+  svg.selectAll('g .y.axis').call(yAxis);
+
+  svg.selectAll(".legend").remove();
 
   var legend = svg.selectAll(".legend")
     .data(color.domain())
@@ -86,11 +101,12 @@ function drawGraph(xColumn, yColumn) {
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function(d) { return d; });
-
-  svg.selectAll('g .x.axis').call(xAxis);
-
-  svg.selectAll('g .y.axis').call(yAxis);
 }
+
+document.querySelector('select[name="role"]').addEventListener('change', function() {
+  role = document.querySelector('select[name="role"]').value;
+  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+});
 
 document.querySelector('select[name="x-axis"]').addEventListener('change', function() {
   drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
