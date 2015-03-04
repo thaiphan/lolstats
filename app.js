@@ -26,14 +26,11 @@ var svg = d3.select("body").append("svg")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.csv("data.csv", function(error, data) {
-  data.forEach(function(d) {
-    d.Minutes = +d.Minutes;
-    d.DamageDealt = +d.DamageDealt;
-    d.Ones = +d.Ones;
-  });
+  var xColumn = 'Minute';
+  var yColumn = 'Damage Dealt';
 
-  x.domain(d3.extent(data, function(d) { return d.Minutes; })).nice();
-  y.domain(d3.extent(data, function(d) { return d.DamageDealt; })).nice();
+  x.domain(d3.extent(data, function(d) { return +d[xColumn]; })).nice();
+  y.domain(d3.extent(data, function(d) { return +d[yColumn]; })).nice();
 
   svg.append("g")
     .attr("class", "x axis")
@@ -62,8 +59,8 @@ d3.csv("data.csv", function(error, data) {
     .enter().append("circle")
     .attr("class", "dot")
     .attr("r", 3.5)
-    .attr("cx", function(d) { return x(d.Minutes); })
-    .attr("cy", function(d) { return y(d.DamageDealt); })
+    .attr("cx", function(d) { return x(d[xColumn]); })
+    .attr("cy", function(d) { return y(d[yColumn]); })
     .style("fill", function(d) { return color(d.Player); });
 
   var legend = svg.selectAll(".legend")
