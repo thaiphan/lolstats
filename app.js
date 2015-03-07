@@ -51,6 +51,58 @@ var role = 'ADC';
 var data = [];
 d3.csv("data.csv", function(error, data) {
   window.data = data;
+
+  window.roles = [];
+  data.forEach(function(thing) {
+    if (roles.indexOf(thing['Role']) == -1) {
+      roles.push(thing['Role']);
+    }
+  });
+  var $select = document.querySelector('select[name="role"]');
+  roles.forEach(function(role) {
+    var node = document.createElement('option');
+    var textNode = document.createTextNode(role);
+    node.appendChild(textNode);
+    node.value = role;
+    $select.appendChild(node);
+  });
+
+  function refreshPlayerList() {
+    $select = document.querySelector('select[name="player"]');
+    $select.innerHTML = '';
+    data.forEach(function(thing) {
+      if (thing.Role == document.querySelector('select[name="role"]').value) {
+        var node = document.createElement('option');
+        var textNode = document.createTextNode(thing.Player);
+        node.appendChild(textNode);
+        node.value = thing.Player;
+        $select.appendChild(node);
+      }
+    });
+  }
+
+  refreshPlayerList();
+
+  document.querySelector('select[name="role"]').addEventListener('change', function() {
+    role = document.querySelector('select[name="role"]').value;
+    drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+
+    refreshPlayerList();
+  });
+
+  document.querySelector('select[name="player"]').addEventListener('change', function() {
+    drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+  });
+
+  document.querySelector('select[name="x-axis"]').addEventListener('change', function() {
+    drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+  });
+
+  document.querySelector('select[name="y-axis"]').addEventListener('change', function() {
+    drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+  });
+
+
   drawGraph('Damage Dealt', 'Damage Dealt');
 });
 
@@ -75,7 +127,14 @@ function drawGraph(xColumn, yColumn) {
     .attr("r", 3.5)
     .attr("cx", function(d) { return x(d[xColumn]); })
     .attr("cy", function(d) { return y(d[yColumn]); })
-    .style("fill", function(d) { return color(d.Player); });
+    .style("fill", function(d) {
+      if (document.querySelector('select[name="player"]').value == d.Player) {
+        return color(d.Player);
+      } else {
+        color(d.Player);
+        return '#ccc';
+      }
+    });
 
   svg.selectAll('g .x.axis').call(xAxis);
 
@@ -102,16 +161,3 @@ function drawGraph(xColumn, yColumn) {
     .style("text-anchor", "end")
     .text(function(d) { return d; });
 }
-
-document.querySelector('select[name="role"]').addEventListener('change', function() {
-  role = document.querySelector('select[name="role"]').value;
-  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
-});
-
-document.querySelector('select[name="x-axis"]').addEventListener('change', function() {
-  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
-});
-
-document.querySelector('select[name="y-axis"]').addEventListener('change', function() {
-  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
-});
