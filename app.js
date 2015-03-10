@@ -34,7 +34,7 @@ svg.append("g")
   .attr("x", width)
   .attr("y", -6)
   .style("text-anchor", "end")
-  .text("Minutes (m)");
+  .text("Damage Dealt");
 
 svg.append("g")
   .attr("class", "y axis")
@@ -45,7 +45,7 @@ svg.append("g")
   .attr("y", 6)
   .attr("dy", ".71em")
   .style("text-anchor", "end")
-  .text("Damage Dealt ('000s)");
+  .text("Damage Dealt");
 
 var role = 'ADC';
 var data = [];
@@ -94,14 +94,28 @@ d3.csv("data.csv", function(error, data) {
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
   });
 
+  document.querySelector('input[name="x-axis-label"]').value = 'Damage Dealt';
+  document.querySelector('input[name="y-axis-label"]').value = 'Damage Dealt';
+
   document.querySelector('select[name="x-axis"]').addEventListener('change', function() {
+    svg.selectAll('g .x.axis .label').text(document.querySelector('select[name="x-axis"]').value);
+    document.querySelector('input[name="x-axis-label"]').value = document.querySelector('select[name="x-axis"]').value;
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
   });
 
   document.querySelector('select[name="y-axis"]').addEventListener('change', function() {
+    svg.selectAll('g .y.axis .label').text(document.querySelector('select[name="y-axis"]').value);
+    document.querySelector('input[name="y-axis-label"]').value = document.querySelector('select[name="y-axis"]').value;
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
   });
 
+  document.querySelector('input[name="x-axis-label"]').addEventListener('keyup', function() {
+    svg.selectAll('g .x.axis .label').text(document.querySelector('input[name="x-axis-label"]').value);
+  });
+
+  document.querySelector('input[name="y-axis-label"]').addEventListener('keyup', function() {
+    svg.selectAll('g .y.axis .label').text(document.querySelector('input[name="y-axis-label"]').value);
+  });
 
   drawGraph('Damage Dealt', 'Damage Dealt');
 });
@@ -137,9 +151,7 @@ function drawGraph(xColumn, yColumn) {
     });
 
   svg.selectAll('g .x.axis').call(xAxis);
-  svg.selectAll('g .x.axis .label').text(document.querySelector('select[name="x-axis"]').value);
   svg.selectAll('g .y.axis').call(yAxis);
-  svg.selectAll('g .y.axis .label').text(document.querySelector('select[name="y-axis"]').value);
 
   svg.selectAll(".legend").remove();
 
