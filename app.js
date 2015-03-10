@@ -137,8 +137,9 @@ function drawGraph(xColumn, yColumn) {
     });
 
   svg.selectAll('g .x.axis').call(xAxis);
-
+  svg.selectAll('g .x.axis .label').text(document.querySelector('select[name="x-axis"]').value);
   svg.selectAll('g .y.axis').call(yAxis);
+  svg.selectAll('g .y.axis .label').text(document.querySelector('select[name="y-axis"]').value);
 
   svg.selectAll(".legend").remove();
 
