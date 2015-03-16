@@ -1,0 +1,7 @@
+{
+  "name": "lolstats",
+  "dependencies": {
+    "bootstrap": "3.x",
+    "d3": "3.x"
+  }
+}

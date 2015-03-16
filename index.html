@@ -3,33 +3,47 @@
 <head>
     <meta charset="utf-8">
     <title>LOLStats</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<label>Role
-<select name="role"></select>
-</label>
-<label>Player
-    <select name="player"></select>
-</label>
-<label>X Axis
-<select name="x-axis">
-    <option value="Damage Dealt">Damage Dealt</option>
-    <option value="Damage Taken">Damage Taken</option>
-    <option value="Damage Efficiency">Damage Efficiency</option>
-    <option value="Minute">Minute</option>
-    <option value="Damage/Minute">Damage/Minute</option>
-</select>
-</label>
-<label>Y Axis
-<select name="y-axis">
-    <option value="Damage Dealt">Damage Dealt</option>
-    <option value="Damage Taken">Damage Taken</option>
-    <option value="Damage Efficiency">Damage Efficiency</option>
-    <option value="Minute">Minute</option>
-    <option value="Damage/Minute">Damage/Minute</option>
-</select>
-</label>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <svg></svg>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select class="form-control" id="role" name="role"></select>
+            </div>
+            <div class="form-group">
+                <label for="player">Player</label>
+                <select class="form-control" id="player" name="player"></select>
+            </div>
+            <div class="form-group">
+                <label for="x-axis">X Axis</label>
+                <select class="form-control" id="x-axis" name="x-axis">
+                    <option value="Damage Dealt">Damage Dealt</option>
+                    <option value="Damage Taken">Damage Taken</option>
+                    <option value="Damage Efficiency">Damage Efficiency</option>
+                    <option value="Minute">Minute</option>
+                    <option value="Damage/Minute">Damage/Minute</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="y-axis">Y Axis</label>
+                <select class="form-control" id="y-axis" name="y-axis">
+                    <option value="Damage Dealt">Damage Dealt</option>
+                    <option value="Damage Taken">Damage Taken</option>
+                    <option value="Damage Efficiency">Damage Efficiency</option>
+                    <option value="Minute">Minute</option>
+                    <option value="Damage/Minute">Damage/Minute</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="labels.js"></script>
 <script src="app.js"></script>
