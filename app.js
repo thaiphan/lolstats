@@ -94,27 +94,14 @@ d3.csv("data.csv", function(error, data) {
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
   });
 
-  document.querySelector('input[name="x-axis-label"]').value = 'Damage Dealt';
-  document.querySelector('input[name="y-axis-label"]').value = 'Damage Dealt';
-
   document.querySelector('select[name="x-axis"]').addEventListener('change', function() {
-    svg.selectAll('g .x.axis .label').text(document.querySelector('select[name="x-axis"]').value);
-    document.querySelector('input[name="x-axis-label"]').value = document.querySelector('select[name="x-axis"]').value;
+    svg.selectAll('g .x.axis .label').text(getLabel(document.querySelector('select[name="x-axis"]').value));
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
   });
 
   document.querySelector('select[name="y-axis"]').addEventListener('change', function() {
-    svg.selectAll('g .y.axis .label').text(document.querySelector('select[name="y-axis"]').value);
-    document.querySelector('input[name="y-axis-label"]').value = document.querySelector('select[name="y-axis"]').value;
+    svg.selectAll('g .y.axis .label').text(getLabel(document.querySelector('select[name="y-axis"]').value));
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
-  });
-
-  document.querySelector('input[name="x-axis-label"]').addEventListener('keyup', function() {
-    svg.selectAll('g .x.axis .label').text(document.querySelector('input[name="x-axis-label"]').value);
-  });
-
-  document.querySelector('input[name="y-axis-label"]').addEventListener('keyup', function() {
-    svg.selectAll('g .y.axis .label').text(document.querySelector('input[name="y-axis-label"]').value);
   });
 
   drawGraph('Damage Dealt', 'Damage Dealt');
