@@ -14,21 +14,30 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
   width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
 
-var x = d3.scale.linear()
-  .range([0, width]);
+var x = d3.scale.linear();
+var y = d3.scale.linear();
 
-var y = d3.scale.linear()
-  .range([height, 0]);
+function getX() {
+  var width = d3.select('svg').node().getBoundingClientRect().width - margin.left - margin.right;
+  return x.range([0, width]);
+}
+function getY() {
+  return y.range([height, 0]);
+}
 
 var color = d3.scale.category10();
 
-var xAxis = d3.svg.axis()
-  .scale(x)
-  .orient("bottom");
+function getXAxis() {
+  return d3.svg.axis()
+    .scale(getX())
+    .orient("bottom");
+}
 
-var yAxis = d3.svg.axis()
-  .scale(y)
-  .orient("left");
+function getYAxis() {
+  return d3.svg.axis()
+    .scale(getY())
+    .orient("left");
+}
 
 var svg = d3.select("svg")
   .attr("height", height + margin.top + margin.bottom)
@@ -38,7 +47,7 @@ var svg = d3.select("svg")
 svg.append("g")
   .attr("class", "x axis")
   .attr("transform", "translate(0," + height + ")")
-  .call(xAxis)
+  .call(getXAxis())
   .append("text")
   .attr("class", "label")
   .attr("x", width)
@@ -47,7 +56,7 @@ svg.append("g")
 
 svg.append("g")
   .attr("class", "y axis")
-  .call(yAxis)
+  .call(getYAxis())
   .append("text")
   .attr("class", "label")
   .attr("transform", "rotate(-90)")
@@ -122,8 +131,8 @@ function getData() {
 }
 
 function drawGraph(xColumn, yColumn) {
-  x.domain(d3.extent(getData(), function(d) { return +d[xColumn]; })).nice();
-  y.domain(d3.extent(getData(), function(d) { return +d[yColumn]; })).nice();
+  getX().domain(d3.extent(getData(), function(d) { return +d[xColumn]; })).nice();
+  getY().domain(d3.extent(getData(), function(d) { return +d[yColumn]; })).nice();
 
   color = d3.scale.category10();
 
@@ -134,8 +143,8 @@ function drawGraph(xColumn, yColumn) {
     .enter().append("circle")
     .attr("class", "dot")
     .attr("r", 3.5)
-    .attr("cx", function(d) { return x(d[xColumn]); })
-    .attr("cy", function(d) { return y(d[yColumn]); })
+    .attr("cx", function(d) { return getX()(d[xColumn]); })
+    .attr("cy", function(d) { return getY()(d[yColumn]); })
     .style("fill", function(d) {
       if (document.querySelector('select[name="player"]').value == d.Player) {
         return color(d.Player);
@@ -145,8 +154,8 @@ function drawGraph(xColumn, yColumn) {
       }
     });
 
-  svg.selectAll('g .x.axis').call(xAxis);
-  svg.selectAll('g .y.axis').call(yAxis);
+  svg.selectAll('g .x.axis').call(getXAxis());
+  svg.selectAll('g .y.axis').call(getYAxis());
 
   svg.selectAll(".legend").remove();
 
@@ -169,3 +178,7 @@ function drawGraph(xColumn, yColumn) {
     .style("text-anchor", "end")
     .text(function(d) { return d; });
 }
+
+d3.select(window).on('resize', function() {
+  drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
+});
