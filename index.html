@@ -8,10 +8,9 @@
 </head>
 <body>
 <div class="container-fluid">
+    <h1>LOLStats</h1>
     <div class="row">
-        <div class="col-md-9">
-            <svg></svg>
-        </div>
+        <!-- Filter column -->
         <div class="col-md-3">
             <div class="form-group">
                 <label for="role">Role</label>
@@ -42,10 +41,13 @@
                 </select>
             </div>
         </div>
+        <!-- Graph column -->
+        <div class="col-md-9">
+            <svg width="100%"></svg>
+        </div>
     </div>
 </div>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="labels.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

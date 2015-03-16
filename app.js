@@ -1,3 +1,14 @@
+var labels = {
+  "Damage Dealt": "Damage Dealt (000s)",
+  "Damage Taken": "Damage Taken",
+  "Damage Efficiency": "Damage Efficiency",
+  "Minute": "Minute",
+  "Damage/Minute": "Damage/Minute"
+};
+
+function getLabel(key) {
+  return labels[key];
+}
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
   width = 960 - margin.left - margin.right,
@@ -20,7 +31,6 @@ var yAxis = d3.svg.axis()
   .orient("left");
 
 var svg = d3.select("svg")
-  .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -33,7 +43,6 @@ svg.append("g")
   .attr("class", "label")
   .attr("x", width)
   .attr("y", -6)
-  .style("text-anchor", "end")
   .text("Damage Dealt");
 
 svg.append("g")
@@ -44,7 +53,6 @@ svg.append("g")
   .attr("transform", "rotate(-90)")
   .attr("y", 6)
   .attr("dy", ".71em")
-  .style("text-anchor", "end")
   .text("Damage Dealt");
 
 var role = 'ADC';

@@ -1,3 +1,7 @@
+.label {
+    text-anchor: end;
+}
+
 .axis path,
 .axis line {
     fill: none;
