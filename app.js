@@ -11,15 +11,17 @@ function getLabel(key) {
 }
 
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
-  width = 960 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
+
+function getWidth() {
+  return d3.select('svg').node().getBoundingClientRect().width - margin.left - margin.right;
+}
 
 var x = d3.scale.linear();
 var y = d3.scale.linear();
 
 function getX() {
-  var width = d3.select('svg').node().getBoundingClientRect().width - margin.left - margin.right;
-  return x.range([0, width]);
+  return x.range([0, getWidth()]);
 }
 function getY() {
   return y.range([height, 0]);
@@ -50,7 +52,7 @@ svg.append("g")
   .call(getXAxis())
   .append("text")
   .attr("class", "label")
-  .attr("x", width)
+  .attr("x", getWidth())
   .attr("y", -6)
   .text("Damage Dealt");
 
@@ -166,13 +168,13 @@ function drawGraph(xColumn, yColumn) {
     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
   legend.append("rect")
-    .attr("x", width - 18)
+    .attr("x", getWidth() - 18)
     .attr("width", 18)
     .attr("height", 18)
     .style("fill", color);
 
   legend.append("text")
-    .attr("x", width - 24)
+    .attr("x", getWidth() - 24)
     .attr("y", 9)
     .attr("dy", ".35em")
     .style("text-anchor", "end")
