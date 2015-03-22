@@ -91,13 +91,18 @@ d3.csv("data.csv", function(error, data) {
   function refreshPlayerList() {
     $select = document.querySelector('select[name="player"]');
     $select.innerHTML = '';
+    var playersAlreadyAddedToList = [];
     data.forEach(function(thing) {
-      if (thing.Role == document.querySelector('select[name="role"]').value) {
-        var node = document.createElement('option');
-        var textNode = document.createTextNode(thing.Player);
-        node.appendChild(textNode);
-        node.value = thing.Player;
-        $select.appendChild(node);
+      // Skip adding duplicate player names to the dropdown box
+      if (playersAlreadyAddedToList.indexOf(thing.Player) == -1) {
+        if (thing.Role == document.querySelector('select[name="role"]').value) {
+          var node = document.createElement('option');
+          var textNode = document.createTextNode(thing.Player);
+          node.appendChild(textNode);
+          node.value = thing.Player;
+          $select.appendChild(node);
+          playersAlreadyAddedToList.push(thing.Player);
+        }
       }
     });
   }
