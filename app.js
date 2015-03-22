@@ -1,9 +1,11 @@
 var labels = {
+  "CS": "CS",
+  "Gold": "Gold (000s)",
   "Damage Dealt": "Damage Dealt (000s)",
-  "Damage Taken": "Damage Taken",
-  "Damage Efficiency": "Damage Efficiency",
-  "Minute": "Minute",
-  "Damage/Minute": "Damage/Minute"
+  "Damage Taken": "Damage Taken (000s)",
+  "Healing": "Healing (000s)",
+  "Ward Placed": "Ward Placed",
+  "Ward Killed": "Ward Killed"
 };
 
 function getLabel(key) {
@@ -54,7 +56,7 @@ svg.append("g")
   .attr("class", "label")
   .attr("x", getWidth())
   .attr("y", -6)
-  .text("Damage Dealt");
+  .text("CS");
 
 svg.append("g")
   .attr("class", "y axis")
@@ -64,7 +66,7 @@ svg.append("g")
   .attr("transform", "rotate(-90)")
   .attr("y", 6)
   .attr("dy", ".71em")
-  .text("Damage Dealt");
+  .text("CS");
 
 var role = 'ADC';
 var data = [];
@@ -123,7 +125,7 @@ d3.csv("data.csv", function(error, data) {
     drawGraph(document.querySelector('select[name="x-axis"]').value, document.querySelector('select[name="y-axis"]').value);
   });
 
-  drawGraph('Damage Dealt', 'Damage Dealt');
+  drawGraph('CS', 'CS');
 });
 
 function getData() {
