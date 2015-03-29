@@ -12,7 +12,7 @@ function getLabel(key) {
   return labels[key];
 }
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
+var margin = {top: 20, right: 120, bottom: 30, left: 40},
   height = 500 - margin.top - margin.bottom;
 
 function getWidth() {
@@ -172,7 +172,7 @@ function drawGraph(xColumn, yColumn) {
     .data(color.domain())
     .enter().append("g")
     .attr("class", "legend")
-    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+    .attr("transform", function(d, i) { return "translate(120," + i * 20 + ")"; });
 
   legend.append("rect")
     .attr("x", getWidth() - 18)
